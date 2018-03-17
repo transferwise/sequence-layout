@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SequenceLayout">
+        <attr name="activeColor" format="color"/>
+        <attr name="backgroundColor" format="color"/>
+        <attr name="activeStepTitleTextAppearance" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="SequenceStep">
+        <attr name="anchor" format="string"/>
+        <attr name="anchorTextAppearance" format="reference"/>
+        <attr name="title" format="string"/>
+        <attr name="titleTextAppearance" format="reference"/>
+        <attr name="subtitle" format="string"/>
+        <attr name="subtitleTextAppearance" format="reference"/>
+        <attr name="active" format="boolean"/>
+    </declare-styleable>
+
+    <style name="SequenceLayout">
+        <item name="activeColor">?colorAccent</item>
+        <item name="backgroundColor">@color/default_progress_background</item>
+        <item name="activeStepTitleTextAppearance">@style/TextAppearance.AppCompat.Title</item>
+    </style>
+
+    <style name="SequenceStep">
+        <item name="anchorTextAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="titleTextAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="subtitleTextAppearance">@style/TextAppearance.AppCompat.Body1</item>
+    </style>
+
+</resources>

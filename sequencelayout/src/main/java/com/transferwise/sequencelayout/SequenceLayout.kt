@@ -1,0 +1,229 @@
+package com.transferwise.sequencelayout
+
+import android.content.Context
+import android.content.res.TypedArray
+import android.support.annotation.ColorInt
+import android.support.annotation.StyleRes
+import android.util.AttributeSet
+import android.util.SparseArray
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.animation.LinearInterpolator
+import android.widget.FrameLayout
+import kotlinx.android.synthetic.main.step_tracker_container.view.*
+import kotlinx.android.synthetic.main.step_tracker_step.view.*
+
+class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
+    : FrameLayout(context, attrs, defStyleAttr), ViewTreeObserver.OnGlobalLayoutListener {
+
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+
+    init {
+        inflate(getContext(), R.layout.step_tracker_container, this)
+
+        val attributes = getContext().theme.obtainStyledAttributes(
+                attrs,
+                R.styleable.SequenceLayout,
+                0,
+                R.style.SequenceLayout)
+        applyAttributes(attributes)
+        attributes.recycle()
+
+        clipToPadding = false
+        clipChildren = false
+
+        onFinishInflate()
+        start()
+    }
+
+    @ColorInt
+    private var progressBackgroundColor: Int = 0
+
+    @ColorInt
+    private var activeColor: Int = 0
+
+    @StyleRes
+    private var activeStepTitleTextAppearance: Int = 0
+
+    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
+        if (child is SequenceStep) {
+            if (child.isActive()) {
+                child.setTitleTextAppearance(activeStepTitleTextAppearance)
+                child.setPadding(
+                        0,
+                        if (stepsWrapper.childCount == 0) 0 else resources.getDimensionPixelSize(R.dimen.step_tracker_active_step_padding_top), //no paddingTop if first step is active
+                        0,
+                        resources.getDimensionPixelSize(R.dimen.step_tracker_active_step_padding_bottom)
+                )
+            }
+            val dot = child.getDot()
+            dot.setDotBackground(activeColor, progressBackgroundColor)
+            dot.setPulseColor(activeColor)
+            stepsWrapper.addView(child, params)
+            return
+        }
+        super.addView(child, index, params)
+    }
+
+    override fun onGlobalLayout() {
+        if (stepsWrapper.childCount > 0) {
+            adaptProgressBarHeight()
+            setProgressBarHorizontalOffset()
+            animateToActive()
+            viewTreeObserver.removeOnGlobalLayoutListener(this)
+        }
+    }
+
+    fun setStyle(@StyleRes defStyleAttr: Int) {
+        val attributes = context.theme.obtainStyledAttributes(defStyleAttr, R.styleable.SequenceLayout)
+        applyAttributes(attributes)
+        attributes.recycle()
+    }
+
+    /**
+     * Sets the progress bar color
+     *
+     * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_activeColor
+     */
+    fun setActiveColor(@ColorInt color: Int) {
+        this.activeColor = color
+        progressBarForeground.setBackgroundColor(color)
+        //TODO apply to existing steps
+    }
+
+    /**
+     * Sets background resource for the dot of each contained step
+     *
+     * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_dotBackground
+     */
+    fun setProgressBackgroundColor(@ColorInt progressBackgroundColor: Int) {
+        this.progressBackgroundColor = progressBackgroundColor
+        progressBarBackground.setBackgroundColor(progressBackgroundColor)
+        //TODO apply to existing steps
+    }
+
+    /**
+     * Sets the titleTextAppearance for the active step
+     *
+     * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_titleTextAppearance
+     */
+    fun setActiveStepTitleTextAppearance(@StyleRes activeStepTitleTextAppearance: Int) {
+        this.activeStepTitleTextAppearance = activeStepTitleTextAppearance
+        //TODO apply to existing steps
+    }
+
+    /**
+     * Removes all contained [com.transferwise.sequencelayout.SequenceStep]s
+     */
+    fun removeAllSteps() {
+        stepsWrapper.removeAllViews()
+    }
+
+    /**
+     * Replaces all contained [com.transferwise.sequencelayout.SequenceStep]s with those provided and bound by the adapter
+     */
+    fun setAdapter(adapter: BaseStepTrackerAdapter<SequenceStep>) {
+        removeAllSteps()
+        val count = adapter.getCount()
+        for (i in 0 until count) {
+            val view = adapter.newView(this)
+            adapter.bindView(view, i)
+            addView(view)
+        }
+        start()
+    }
+
+    private fun applyAttributes(attributes: TypedArray) {
+        setupActiveColor(attributes)
+        setupDotBackground(attributes)
+        setupActiveStepTitleTextAppearance(attributes)
+    }
+
+    private fun setupActiveColor(attributes: TypedArray) {
+        setActiveColor(attributes.getColor(R.styleable.SequenceLayout_activeColor, 0))
+    }
+
+    private fun setupDotBackground(attributes: TypedArray) {
+        setProgressBackgroundColor(attributes.getColor(R.styleable.SequenceLayout_backgroundColor, 0))
+    }
+
+    private fun setupActiveStepTitleTextAppearance(attributes: TypedArray) {
+        setActiveStepTitleTextAppearance(attributes.getResourceId(R.styleable.SequenceLayout_activeStepTitleTextAppearance, 0))
+    }
+
+    private fun setProgressBarHorizontalOffset() {
+        val firstAnchor: View = stepsWrapper.getChildAt(0).anchor.findViewById(R.id.anchor)
+        val firstDot: View = stepsWrapper.getChildAt(0).findViewById(R.id.dot)
+        progressBarWrapper.translationX = firstAnchor.measuredWidth + (firstDot.measuredWidth - progressBarWrapper.measuredWidth) / 2f
+    }
+
+    private fun animateToActive() {
+        val stepsToAnimate = getStepOffsets()
+        if (stepsToAnimate.size() > 0) {
+            val lastChild = stepsWrapper.getChildAt(stepsWrapper.childCount - 1)
+            val lastChildOffset = lastChild.top + lastChild.paddingTop
+            progressBarForeground.visibility = VISIBLE
+            progressBarForeground.pivotY = 0f
+            progressBarForeground.scaleY = 0f
+            progressBarForeground
+                    .animate()
+                    .setStartDelay(resources.getInteger(R.integer.step_tracker_step_duration).toLong())
+                    .scaleY(stepsToAnimate.keyAt(stepsToAnimate.size() - 1) / lastChildOffset.toFloat())
+                    .setInterpolator(LinearInterpolator())
+                    .setDuration((stepsToAnimate.size() - 1) * resources.getInteger(R.integer.step_tracker_step_duration).toLong())
+                    .setUpdateListener({
+                        val v = (progressBarForeground.scaleY * lastChildOffset)
+
+                        for (i in 0..stepsToAnimate.size()) {
+                            if (stepsToAnimate.valueAt(i) != null) {
+                                val step = stepsToAnimate.valueAt(i) as SequenceStep
+                                if (stepsToAnimate.keyAt(i) <= v + step.paddingTop) {
+                                    if (i == stepsToAnimate.size() - 1) {
+                                        step.getDot().isActivated = true
+                                    } else {
+                                        step.getDot().isEnabled = true
+                                    }
+                                    stepsToAnimate.setValueAt(i, null)
+                                }
+                            }
+                        }
+                    })
+                    .start()
+        }
+    }
+
+    private fun adaptProgressBarHeight() {
+        val layoutParams = progressBarWrapper.layoutParams
+        val lastChild = stepsWrapper.getChildAt(stepsWrapper.childCount - 1)
+        layoutParams.height = lastChild.top + lastChild.paddingTop
+        progressBarWrapper.layoutParams = layoutParams
+    }
+
+    private fun getStepOffsets(): SparseArray<View> {
+        val childCount = stepsWrapper.childCount
+        val stepOffsets = SparseArray<View>()
+        var containsActiveStep = false
+        for (i in 0 until childCount) {
+            val step = stepsWrapper.getChildAt(i) as SequenceStep
+            stepOffsets.append(step.top - progressBarForeground.top + step.getDot().top, step)
+            if (step.isActive()) {
+                containsActiveStep = true
+                if (i == childCount - 1) {
+                    //remove bottom padding if active step is last step
+                    step.setPadding(step.paddingLeft, step.paddingTop, step.paddingRight, 0)
+                }
+                break
+            }
+        }
+        if (!containsActiveStep) {
+            stepOffsets.clear()
+        }
+        return stepOffsets
+    }
+
+    fun start() {
+        viewTreeObserver.addOnGlobalLayoutListener(this)
+    }
+}

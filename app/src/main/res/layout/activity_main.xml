@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:ignore="HardcodedText">
+
+        <com.transferwise.sequencelayout.SequenceLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:anchor="30 Nov"
+                app:title="First step"/>
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Second step"/>
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingTop="4dp"
+                app:active="true"
+                app:anchor="Today"
+                app:subtitle="This is the subtitle of this step.\nIt should describe steps (especially the active step) in a detailed way."
+                app:title="Third step"/>
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Fourth step"/>
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:anchor="2 Dec"
+                app:title="Fifth step"/>
+        </com.transferwise.sequencelayout.SequenceLayout>
+
+    </LinearLayout>
+</ScrollView>
