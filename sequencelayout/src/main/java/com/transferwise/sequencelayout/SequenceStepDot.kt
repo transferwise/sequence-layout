@@ -21,17 +21,11 @@ class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    private lateinit var pulseAnimator: AnimatorSet
+    private var pulseAnimator: AnimatorSet? = null
 
     init {
         View.inflate(getContext(), R.layout.step_tracker_dot, this)
-
-        setupAnimator()
-
         isEnabled = false
-        clipToPadding = false
-        clipChildren = false
-
         onFinishInflate()
     }
 
@@ -73,26 +67,29 @@ class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
     }
 
     private fun startAnimation() {
-        if (pulseAnimator.isStarted) {
+        if (pulseAnimator == null) {
+            setupAnimator()
+        }
+        if (pulseAnimator!!.isStarted) {
             return
         }
 
         pulseView.visibility = VISIBLE
-        pulseAnimator.start()
+        pulseAnimator!!.start()
     }
 
     private fun stopAnimation() {
-        if (!pulseAnimator.isStarted) {
+        if (pulseAnimator == null || !pulseAnimator!!.isStarted) {
             return
         }
-        pulseAnimator.end()
+        pulseAnimator!!.end()
         pulseView.visibility = GONE
     }
 
     private fun setupAnimator() {
         pulseAnimator = AnimatorInflater.loadAnimator(context, R.animator.fading_pulse) as AnimatorSet
-        pulseAnimator.setTarget(pulseView)
-        pulseAnimator.addListener(object : AnimatorListenerAdapter() {
+        pulseAnimator!!.setTarget(pulseView)
+        pulseAnimator!!.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animator: Animator) {
                 if (isActivated) {
                     animator.start()
@@ -120,7 +117,7 @@ class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
     }
 
     override fun onDetachedFromWindow() {
-        pulseAnimator.cancel()
+        pulseAnimator?.cancel()
         super.onDetachedFromWindow()
     }
 }
