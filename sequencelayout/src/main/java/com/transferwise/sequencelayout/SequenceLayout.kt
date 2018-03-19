@@ -128,8 +128,9 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
         removeAllSteps()
         val count = adapter.getCount()
         for (i in 0 until count) {
-            val view = adapter.newView(this)
-            adapter.bindView(view, i)
+            val item = adapter.getItem(i)
+            val view = SequenceStep(context)
+            adapter.bindView(view, item)
             addView(view)
         }
         start()
