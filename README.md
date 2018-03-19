@@ -1,6 +1,8 @@
 # sequence-layout
 <img align="right" src="https://media.giphy.com/media/TGaDOPfTrX749uhD0L/giphy.gif">
-A vertical sequence UI component for Android
+A vertical sequence UI component for Android.
+
+Animates a progress bar to the first active step in the sequence and then periodically runs a pulse animation on that step.
 
 ## Setup
 `TODO: explain how to add maven dependency`
@@ -49,38 +51,38 @@ You can define steps in your XML layout:
 </com.transferwise.sequencelayout.SequenceLayout>
 ```
 
-Available attributes for `SequenceLayout`:
+Custom attributes for `SequenceLayout`:
 
 | Attribute | Description |
 | --- | --- |
 | `activeColor` | foreground color of the progress bar |
 | `backgroundColor` | background color of the progress bar |
 
-Available attributes for `SequenceStep`:
+Custom attributes for `SequenceStep`:
 
 | Attribute | Description |
 | --- | --- |
-| `active` | boolean to indicate if step is active |
+| `active` | boolean to indicate if step is active. There should only be one active step per `SequenceLayout`. |
 | `anchor` | text for the left side of the step |
 | `anchorTextAppearance` | styling for the left side of the step |
 | `title` | title of the step |
 | `titleTextAppearance` | styling for the title of the step |
-| `title` | subtitle of the step |
-| `titleTextAppearance` | styling for the subtitle of the step |
+| `subtitle` | subtitle of the step |
+| `subtitleTextAppearance` | styling for the subtitle of the step |
 
 ### Programmatically
 
 Alternatively, define an adapter that extends `SequenceAdapter<T>`, like this:
 
 ```kotlin
-class MyAdapter(private val items: List<MyItem>) : SequenceAdapter<MyItem>() {
+class MyAdapter(private val items: List<MyItem>) : SequenceAdapter<MyAdapter.MyItem>() {
 
     override fun getCount(): Int {
-        items.size
+        return items.size
     }
 
     override fun getItem(position: Int): MyItem {
-        items[position]
+        return items[position]
     }
 
     override fun bindView(sequenceStep: SequenceStep, item: MyItem) {
