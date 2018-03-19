@@ -3,9 +3,8 @@ package com.transferwise.sequencelayout
 /**
  * Adapter to bind data to [com.transferwise.sequencelayout.SequenceStep]s for a [com.transferwise.sequencelayout.SequenceLayout].
  */
-abstract class BaseStepTrackerAdapter<T> {
-
-
+abstract class SequenceAdapter<T> {
+    
     fun bindView(SequenceStep: SequenceStep, position: Int) {
         bindView(SequenceStep, getItem(position))
     }

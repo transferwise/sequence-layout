@@ -124,7 +124,7 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     /**
      * Replaces all contained [com.transferwise.sequencelayout.SequenceStep]s with those provided and bound by the adapter
      */
-    fun setAdapter(adapter: BaseStepTrackerAdapter<SequenceStep>) {
+    fun setAdapter(adapter: SequenceAdapter<SequenceStep>) {
         removeAllSteps()
         val count = adapter.getCount()
         for (i in 0 until count) {
