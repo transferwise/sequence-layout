@@ -5,7 +5,23 @@ A vertical sequence UI component for Android.
 Animates a progress bar to the first active step in the sequence and then periodically runs a pulse animation on that step.
 
 ## Setup
-`TODO: explain how to add maven dependency`
+
+Add the JitPack maven repository to your root `build.gradle`:
+```groovy
+allprojects {
+    repositories {
+      maven { url "https://jitpack.io" }
+    }
+}
+```
+
+And then the actual library dependency to your module's `build.gradle`:
+
+```groovy
+dependencies {
+    compile 'com.github.transferwise:sequencelayout:1.0.0'
+}
+```
 
 ## Usage
 
