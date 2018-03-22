@@ -13,6 +13,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0.0"
+        archivesBaseName = "com.transferwise.sequencelayout-${versionName}"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -23,7 +24,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
