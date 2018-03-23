@@ -19,7 +19,7 @@ And then the actual library dependency to your module's `build.gradle`:
 
 ```groovy
 dependencies {
-    compile 'com.github.transferwise:sequencelayout:1.0.0'
+    compile 'com.github.transferwise:sequence-layout:1.0.1'
 }
 ```
 
