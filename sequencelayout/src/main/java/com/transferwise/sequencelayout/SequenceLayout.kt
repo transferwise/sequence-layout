@@ -14,6 +14,29 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.step_tracker_container.view.*
 import kotlinx.android.synthetic.main.step_tracker_step.view.*
 
+/**
+ * Vertical step tracker that contains {@link com.transferwise.sequencelayout.SequenceStep}s and animates to the first active step.
+ *
+ * <pre>
+ * &lt;com.transferwise.sequencelayout.SequenceLayout
+ *      android:layout_width="match_parent"
+ *      android:layout_height="wrap_content"
+ *      app:activeColor="@color/tw_blue_mid"
+ *      app:backgroundColor="@drawable/step_tracker_dot_selector_light"
+ *      app:pulseBackground="@drawable/step_tracker_pulse_blue"&gt;
+ *
+ *      &lt;com.transferwise.sequencelayout.SequenceStep ... /&gt;
+ *      &lt;com.transferwise.sequencelayout.SequenceStep app:active="true" ... /&gt;
+ *      &lt;com.transferwise.sequencelayout.SequenceStep ... /&gt;
+ *
+ * &lt;/com.transferwise.sequencelayout.SequenceLayout&gt;
+ * </pre>
+ *
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_activeColor
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_backgroundColor
+ *
+ * @see com.transferwise.sequencelayout.SequenceStep
+ */
 class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     : FrameLayout(context, attrs, defStyleAttr), ViewTreeObserver.OnGlobalLayoutListener {
 
@@ -44,13 +67,9 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     @ColorInt
     private var activeColor: Int = 0
 
-    @StyleRes
-    private var activeStepTitleTextAppearance: Int = 0
-
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
         if (child is SequenceStep) {
             if (child.isActive()) {
-                child.setTitleTextAppearance(activeStepTitleTextAppearance)
                 child.setPadding(
                         0,
                         if (stepsWrapper.childCount == 0) 0 else resources.getDimensionPixelSize(R.dimen.step_tracker_active_step_padding_top), //no paddingTop if first step is active
@@ -105,16 +124,6 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     }
 
     /**
-     * Sets the titleTextAppearance for the active step
-     *
-     * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_titleTextAppearance
-     */
-    fun setActiveStepTitleTextAppearance(@StyleRes activeStepTitleTextAppearance: Int) {
-        this.activeStepTitleTextAppearance = activeStepTitleTextAppearance
-        //TODO apply to existing steps
-    }
-
-    /**
      * Removes all contained [com.transferwise.sequencelayout.SequenceStep]s
      */
     fun removeAllSteps() {
@@ -139,7 +148,6 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     private fun applyAttributes(attributes: TypedArray) {
         setupActiveColor(attributes)
         setupDotBackground(attributes)
-        setupActiveStepTitleTextAppearance(attributes)
     }
 
     private fun setupActiveColor(attributes: TypedArray) {
@@ -148,10 +156,6 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
 
     private fun setupDotBackground(attributes: TypedArray) {
         setProgressBackgroundColor(attributes.getColor(R.styleable.SequenceLayout_backgroundColor, 0))
-    }
-
-    private fun setupActiveStepTitleTextAppearance(attributes: TypedArray) {
-        setActiveStepTitleTextAppearance(attributes.getResourceId(R.styleable.SequenceLayout_activeStepTitleTextAppearance, 0))
     }
 
     private fun setProgressBarHorizontalOffset() {

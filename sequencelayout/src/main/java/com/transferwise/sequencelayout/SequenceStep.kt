@@ -12,7 +12,32 @@ import android.widget.TableRow
 import android.widget.TextView
 import kotlinx.android.synthetic.main.step_tracker_step.view.*
 
-
+/**
+ * Step, represented in a row inside of {@link com.transferwise.sequencelayout.SequenceLayout}.
+ *
+ * <pre>
+ * &lt;com.transferwise.sequencelayout.SequenceStep
+ *      android:layout_width="match_parent"
+ *      android:layout_height="wrap_content"
+ *      app:active="true"
+ *      app:anchor="Anchor"
+ *      app:anchorTextAppearance="@style/TextAppearance.AppCompat.Small"
+ *      app:subtitle="This is a subtitle"
+ *      app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Body1"
+ *      app:title="Third step"
+ *      app:titleTextAppearance="@style/TextAppearance.AppCompat.Title" /&gt;
+ * </pre>
+ *
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_anchor
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_anchorTextAppearance
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_title
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_titleTextAppearance
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_subtitle
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_subtitleTextAppearance
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_active
+ *
+ * @see com.transferwise.sequencelayout.SequenceLayout
+ */
 class SequenceStep(context: Context?, attrs: AttributeSet?)
     : TableRow(context, attrs), ViewTreeObserver.OnGlobalLayoutListener {
 
