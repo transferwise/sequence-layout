@@ -41,7 +41,7 @@ import kotlinx.android.synthetic.main.sequence_step.view.*
 public class SequenceStep(context: Context?, attrs: AttributeSet?)
     : TableRow(context, attrs), ViewTreeObserver.OnGlobalLayoutListener {
 
-    constructor(context: Context) : this(context, null)
+    public constructor(context: Context) : this(context, null)
 
     private var isActive: Boolean = false
 
@@ -76,7 +76,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_anchor
      */
-    fun setAnchor(anchor: CharSequence?) {
+    public fun setAnchor(anchor: CharSequence?) {
         this.anchor.text = anchor
         this.anchor.visibility = View.VISIBLE
         this.anchor.minWidth = resources.getDimensionPixelSize(R.dimen.sequence_anchor_min_width)
@@ -87,7 +87,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_anchorTextAppearance
      */
-    fun setAnchorTextAppearance(@StyleRes resourceId: Int) {
+    public fun setAnchorTextAppearance(@StyleRes resourceId: Int) {
         TextViewCompat.setTextAppearance(anchor, resourceId)
     }
 
@@ -96,7 +96,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_title
      */
-    fun setTitle(title: CharSequence?) {
+    public fun setTitle(title: CharSequence?) {
         this.title.text = title
         this.title.visibility = View.VISIBLE
     }
@@ -106,7 +106,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_title
      */
-    fun setTitle(@StringRes resId: Int) {
+    public fun setTitle(@StringRes resId: Int) {
         setTitle(context.getString(resId))
     }
 
@@ -115,7 +115,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_titleTextAppearance
      */
-    fun setTitleTextAppearance(@StyleRes resourceId: Int) {
+    public fun setTitleTextAppearance(@StyleRes resourceId: Int) {
         TextViewCompat.setTextAppearance(title, resourceId)
     }
 
@@ -124,7 +124,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_subtitle
      */
-    fun setSubtitle(subtitle: CharSequence?) {
+    public fun setSubtitle(subtitle: CharSequence?) {
         this.subtitle.text = subtitle
         this.subtitle.visibility = View.VISIBLE
     }
@@ -134,7 +134,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_subtitle
      */
-    fun setSubtitle(@StringRes resId: Int) {
+    public fun setSubtitle(@StringRes resId: Int) {
         setSubtitle(context.getString(resId))
     }
 
@@ -143,7 +143,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_subtitleTextAppearance
      */
-    fun setSubtitleTextAppearance(@StyleRes resourceId: Int) {
+    public fun setSubtitleTextAppearance(@StyleRes resourceId: Int) {
         TextViewCompat.setTextAppearance(subtitle, resourceId)
     }
 
@@ -152,7 +152,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_active
      */
-    fun isActive(): Boolean {
+    public fun isActive(): Boolean {
         return isActive
     }
 
@@ -161,7 +161,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_active
      */
-    fun setActive(isActive: Boolean) {
+    public fun setActive(isActive: Boolean) {
         this.isActive = isActive
     }
 

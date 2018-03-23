@@ -39,8 +39,8 @@ import kotlinx.android.synthetic.main.sequence_step.view.*
 public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     : FrameLayout(context, attrs, defStyleAttr), ViewTreeObserver.OnGlobalLayoutListener {
 
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    public constructor(context: Context) : this(context, null)
+    public constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     init {
         inflate(getContext(), R.layout.sequence_layout, this)
@@ -60,41 +60,14 @@ public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAtt
         start()
     }
 
-    @ColorInt
-    private var progressBackgroundColor: Int = 0
+    @ColorInt private var progressBackgroundColor: Int = 0
+    @ColorInt private var progressForegroundColor: Int = 0
 
-    @ColorInt
-    private var progressForegroundColor: Int = 0
-
-    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (child is SequenceStep) {
-            if (child.isActive()) {
-                child.setPadding(
-                        0,
-                        if (stepsWrapper.childCount == 0) 0 else resources.getDimensionPixelSize(R.dimen.sequence_active_step_padding_top), //no paddingTop if first step is active
-                        0,
-                        resources.getDimensionPixelSize(R.dimen.sequence_active_step_padding_bottom)
-                )
-            }
-            val dot = child.getDot()
-            dot.setDotBackground(progressForegroundColor, progressBackgroundColor)
-            dot.setPulseColor(progressForegroundColor)
-            stepsWrapper.addView(child, params)
-            return
-        }
-        super.addView(child, index, params)
+    public fun start() {
+        viewTreeObserver.addOnGlobalLayoutListener(this)
     }
 
-    override fun onGlobalLayout() {
-        if (stepsWrapper.childCount > 0) {
-            adaptProgressBarHeight()
-            setProgressBarHorizontalOffset()
-            animateToActive()
-            viewTreeObserver.removeOnGlobalLayoutListener(this)
-        }
-    }
-
-    fun setStyle(@StyleRes defStyleAttr: Int) {
+    public fun setStyle(@StyleRes defStyleAttr: Int) {
         val attributes = context.theme.obtainStyledAttributes(defStyleAttr, R.styleable.SequenceLayout)
         applyAttributes(attributes)
         attributes.recycle()
@@ -105,7 +78,7 @@ public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAtt
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_progressForegroundColor
      */
-    fun setProgressForegroundColor(@ColorInt color: Int) {
+    public fun setProgressForegroundColor(@ColorInt color: Int) {
         this.progressForegroundColor = color
         progressBarForeground.setBackgroundColor(color)
         //TODO apply to existing steps
@@ -116,7 +89,7 @@ public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAtt
      *
      * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_dotBackground
      */
-    fun setProgressBackgroundColor(@ColorInt progressBackgroundColor: Int) {
+    public fun setProgressBackgroundColor(@ColorInt progressBackgroundColor: Int) {
         this.progressBackgroundColor = progressBackgroundColor
         progressBarBackground.setBackgroundColor(progressBackgroundColor)
         //TODO apply to existing steps
@@ -125,14 +98,14 @@ public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAtt
     /**
      * Removes all contained [com.transferwise.sequencelayout.SequenceStep]s
      */
-    fun removeAllSteps() {
+    public fun removeAllSteps() {
         stepsWrapper.removeAllViews()
     }
 
     /**
      * Replaces all contained [com.transferwise.sequencelayout.SequenceStep]s with those provided and bound by the adapter
      */
-    fun setAdapter(adapter: SequenceAdapter<SequenceStep>) {
+    public fun setAdapter(adapter: SequenceAdapter<SequenceStep>) {
         removeAllSteps()
         val count = adapter.getCount()
         for (i in 0 until count) {
@@ -227,7 +200,31 @@ public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAtt
         return stepOffsets
     }
 
-    fun start() {
-        viewTreeObserver.addOnGlobalLayoutListener(this)
+    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
+        if (child is SequenceStep) {
+            if (child.isActive()) {
+                child.setPadding(
+                        0,
+                        if (stepsWrapper.childCount == 0) 0 else resources.getDimensionPixelSize(R.dimen.sequence_active_step_padding_top), //no paddingTop if first step is active
+                        0,
+                        resources.getDimensionPixelSize(R.dimen.sequence_active_step_padding_bottom)
+                )
+            }
+            val dot = child.getDot()
+            dot.setDotBackground(progressForegroundColor, progressBackgroundColor)
+            dot.setPulseColor(progressForegroundColor)
+            stepsWrapper.addView(child, params)
+            return
+        }
+        super.addView(child, index, params)
+    }
+
+    override fun onGlobalLayout() {
+        if (stepsWrapper.childCount > 0) {
+            adaptProgressBarHeight()
+            setProgressBarHorizontalOffset()
+            animateToActive()
+            viewTreeObserver.removeOnGlobalLayoutListener(this)
+        }
     }
 }

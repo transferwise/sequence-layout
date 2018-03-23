@@ -3,7 +3,7 @@ package com.transferwise.sequencelayout
 /**
  * Adapter to bind data to [com.transferwise.sequencelayout.SequenceStep]s for a [com.transferwise.sequencelayout.SequenceLayout].
  */
-abstract class SequenceAdapter<T> {
+public abstract class SequenceAdapter<T> {
 
     abstract fun getCount(): Int
 
