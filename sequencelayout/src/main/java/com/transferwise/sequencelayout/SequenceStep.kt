@@ -38,7 +38,7 @@ import kotlinx.android.synthetic.main.sequence_step.view.*
  *
  * @see com.transferwise.sequencelayout.SequenceLayout
  */
-class SequenceStep(context: Context?, attrs: AttributeSet?)
+public class SequenceStep(context: Context?, attrs: AttributeSet?)
     : TableRow(context, attrs), ViewTreeObserver.OnGlobalLayoutListener {
 
     constructor(context: Context) : this(context, null)
@@ -165,7 +165,7 @@ class SequenceStep(context: Context?, attrs: AttributeSet?)
         this.isActive = isActive
     }
 
-    fun getDot(): SequenceStepDot {
+    internal fun getDot(): SequenceStepDot {
         return dot
     }
 

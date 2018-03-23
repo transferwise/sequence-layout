@@ -1,4 +1,4 @@
-# sequence-layout
+# sequence-layout [![](https://jitpack.io/v/transferwise/sequence-layout.svg)](https://jitpack.io/#transferwise/sequence-layout)
 <img align="right" src="https://media.giphy.com/media/TGaDOPfTrX749uhD0L/giphy.gif">
 A vertical sequence UI component for Android.
 
@@ -19,7 +19,7 @@ And then the actual library dependency to your module's `build.gradle`:
 
 ```groovy
 dependencies {
-    compile 'com.github.transferwise:sequence-layout:1.0.1'
+    compile 'com.github.transferwise:sequence-layout:1.0.2'
 }
 ```
 
