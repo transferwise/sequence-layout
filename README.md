@@ -52,7 +52,8 @@ You can define steps in your XML layout:
         app:active="true"
         app:anchor="Today"
         app:subtitle="Subtitle of this step."
-        app:title="Third step"/>
+        app:title="Third step"
+        app:titleTextAppearance="@style/TextAppearance.AppCompat.Title"/>
 
     <com.transferwise.sequencelayout.SequenceStep
         android:layout_width="match_parent"
@@ -71,8 +72,8 @@ Custom attributes for `SequenceLayout`:
 
 | Attribute | Description |
 | --- | --- |
-| `activeColor` | foreground color of the progress bar |
-| `backgroundColor` | background color of the progress bar |
+| `progressForegroundColor` | foreground color of the progress bar |
+| `progressBackgroundColor` | background color of the progress bar |
 
 Custom attributes for `SequenceStep`:
 

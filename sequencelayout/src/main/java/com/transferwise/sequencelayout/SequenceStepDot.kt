@@ -13,7 +13,7 @@ import android.support.annotation.ColorInt
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.step_tracker_dot.view.*
+import kotlinx.android.synthetic.main.sequence_dot.view.*
 
 class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     : FrameLayout(context, attrs, defStyleAttr) {
@@ -24,15 +24,15 @@ class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
     private var pulseAnimator: AnimatorSet? = null
 
     init {
-        View.inflate(getContext(), R.layout.step_tracker_dot, this)
+        View.inflate(getContext(), R.layout.sequence_dot, this)
         isEnabled = false
         onFinishInflate()
     }
 
-    fun setDotBackground(@ColorInt color: Int, @ColorInt backgroundColor: Int) {
+    internal fun setDotBackground(@ColorInt color: Int, @ColorInt progressBackgroundColor: Int) {
         with(StateListDrawable()) {
-            setEnterFadeDuration(resources.getInteger(R.integer.step_tracker_step_duration))
-            setExitFadeDuration(resources.getInteger(R.integer.step_tracker_step_duration))
+            setEnterFadeDuration(resources.getInteger(R.integer.sequence_step_duration))
+            setExitFadeDuration(resources.getInteger(R.integer.sequence_step_duration))
 
             addState(intArrayOf(android.R.attr.state_activated),
                     with(GradientDrawable()) {
@@ -50,7 +50,7 @@ class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
             addState(intArrayOf(),
                     with(GradientDrawable()) {
                         shape = OVAL
-                        setColor(backgroundColor)
+                        setColor(progressBackgroundColor)
                         setStroke(1.toDp, Color.TRANSPARENT)
                         this
                     })
@@ -58,7 +58,7 @@ class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
         }
     }
 
-    fun setPulseColor(@ColorInt color: Int) {
+    internal fun setPulseColor(@ColorInt color: Int) {
         with(GradientDrawable()) {
             shape = OVAL
             setColor(color)

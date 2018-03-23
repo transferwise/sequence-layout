@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.step_tracker_container.view.*
-import kotlinx.android.synthetic.main.step_tracker_step.view.*
+import kotlinx.android.synthetic.main.sequence_layout.view.*
+import kotlinx.android.synthetic.main.sequence_step.view.*
 
 /**
  * Vertical step tracker that contains {@link com.transferwise.sequencelayout.SequenceStep}s and animates to the first active step.
@@ -21,9 +21,8 @@ import kotlinx.android.synthetic.main.step_tracker_step.view.*
  * &lt;com.transferwise.sequencelayout.SequenceLayout
  *      android:layout_width="match_parent"
  *      android:layout_height="wrap_content"
- *      app:activeColor="@color/tw_blue_mid"
- *      app:backgroundColor="@drawable/step_tracker_dot_selector_light"
- *      app:pulseBackground="@drawable/step_tracker_pulse_blue"&gt;
+ *      app:progressForegroundColor="?colorAccent"
+ *      app:progressBackgroundColor="#ddd"&gt;
  *
  *      &lt;com.transferwise.sequencelayout.SequenceStep ... /&gt;
  *      &lt;com.transferwise.sequencelayout.SequenceStep app:active="true" ... /&gt;
@@ -32,8 +31,8 @@ import kotlinx.android.synthetic.main.step_tracker_step.view.*
  * &lt;/com.transferwise.sequencelayout.SequenceLayout&gt;
  * </pre>
  *
- * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_activeColor
- * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_backgroundColor
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_progressForegroundColor
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_progressBackgroundColor
  *
  * @see com.transferwise.sequencelayout.SequenceStep
  */
@@ -44,7 +43,7 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     init {
-        inflate(getContext(), R.layout.step_tracker_container, this)
+        inflate(getContext(), R.layout.sequence_layout, this)
 
         val attributes = getContext().theme.obtainStyledAttributes(
                 attrs,
@@ -65,21 +64,21 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     private var progressBackgroundColor: Int = 0
 
     @ColorInt
-    private var activeColor: Int = 0
+    private var progressForegroundColor: Int = 0
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
         if (child is SequenceStep) {
             if (child.isActive()) {
                 child.setPadding(
                         0,
-                        if (stepsWrapper.childCount == 0) 0 else resources.getDimensionPixelSize(R.dimen.step_tracker_active_step_padding_top), //no paddingTop if first step is active
+                        if (stepsWrapper.childCount == 0) 0 else resources.getDimensionPixelSize(R.dimen.sequence_active_step_padding_top), //no paddingTop if first step is active
                         0,
-                        resources.getDimensionPixelSize(R.dimen.step_tracker_active_step_padding_bottom)
+                        resources.getDimensionPixelSize(R.dimen.sequence_active_step_padding_bottom)
                 )
             }
             val dot = child.getDot()
-            dot.setDotBackground(activeColor, progressBackgroundColor)
-            dot.setPulseColor(activeColor)
+            dot.setDotBackground(progressForegroundColor, progressBackgroundColor)
+            dot.setPulseColor(progressForegroundColor)
             stepsWrapper.addView(child, params)
             return
         }
@@ -104,10 +103,10 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     /**
      * Sets the progress bar color
      *
-     * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_activeColor
+     * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceLayout_progressForegroundColor
      */
-    fun setActiveColor(@ColorInt color: Int) {
-        this.activeColor = color
+    fun setProgressForegroundColor(@ColorInt color: Int) {
+        this.progressForegroundColor = color
         progressBarForeground.setBackgroundColor(color)
         //TODO apply to existing steps
     }
@@ -146,16 +145,16 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     }
 
     private fun applyAttributes(attributes: TypedArray) {
-        setupActiveColor(attributes)
+        setupProgressForegroundColor(attributes)
         setupDotBackground(attributes)
     }
 
-    private fun setupActiveColor(attributes: TypedArray) {
-        setActiveColor(attributes.getColor(R.styleable.SequenceLayout_activeColor, 0))
+    private fun setupProgressForegroundColor(attributes: TypedArray) {
+        setProgressForegroundColor(attributes.getColor(R.styleable.SequenceLayout_progressForegroundColor, 0))
     }
 
     private fun setupDotBackground(attributes: TypedArray) {
-        setProgressBackgroundColor(attributes.getColor(R.styleable.SequenceLayout_backgroundColor, 0))
+        setProgressBackgroundColor(attributes.getColor(R.styleable.SequenceLayout_progressBackgroundColor, 0))
     }
 
     private fun setProgressBarHorizontalOffset() {
@@ -174,10 +173,10 @@ class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
             progressBarForeground.scaleY = 0f
             progressBarForeground
                     .animate()
-                    .setStartDelay(resources.getInteger(R.integer.step_tracker_step_duration).toLong())
+                    .setStartDelay(resources.getInteger(R.integer.sequence_step_duration).toLong())
                     .scaleY(stepsToAnimate.keyAt(stepsToAnimate.size() - 1) / lastChildOffset.toFloat())
                     .setInterpolator(LinearInterpolator())
-                    .setDuration((stepsToAnimate.size() - 1) * resources.getInteger(R.integer.step_tracker_step_duration).toLong())
+                    .setDuration((stepsToAnimate.size() - 1) * resources.getInteger(R.integer.sequence_step_duration).toLong())
                     .setUpdateListener({
                         val v = (progressBarForeground.scaleY * lastChildOffset)
 

@@ -2,8 +2,8 @@
 <resources>
 
     <declare-styleable name="SequenceLayout">
-        <attr name="activeColor" format="color"/>
-        <attr name="backgroundColor" format="color"/>
+        <attr name="progressForegroundColor" format="color"/>
+        <attr name="progressBackgroundColor" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="SequenceStep">
@@ -17,8 +17,8 @@
     </declare-styleable>
 
     <style name="SequenceLayout">
-        <item name="activeColor">?colorAccent</item>
-        <item name="backgroundColor">@color/default_progress_background</item>
+        <item name="progressForegroundColor">?colorAccent</item>
+        <item name="progressBackgroundColor">@color/default_progress_background</item>
     </style>
 
     <style name="SequenceStep">

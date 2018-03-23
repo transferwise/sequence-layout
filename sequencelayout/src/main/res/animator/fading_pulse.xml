@@ -5,21 +5,21 @@
     <set android:ordering="together">
 
         <objectAnimator
-            android:duration="@integer/step_tracker_pulse_duration"
+            android:duration="@integer/sequence_pulse_duration"
             android:interpolator="@android:anim/linear_interpolator"
             android:propertyName="scaleX"
             android:valueFrom="1f"
             android:valueTo="5f" />
 
         <objectAnimator
-            android:duration="@integer/step_tracker_pulse_duration"
+            android:duration="@integer/sequence_pulse_duration"
             android:interpolator="@android:anim/linear_interpolator"
             android:propertyName="scaleY"
             android:valueFrom="1f"
             android:valueTo="5f" />
 
         <objectAnimator
-            android:duration="@integer/step_tracker_pulse_duration"
+            android:duration="@integer/sequence_pulse_duration"
             android:interpolator="@android:anim/linear_interpolator"
             android:propertyName="alpha"
             android:valueFrom="0.3f"
@@ -28,7 +28,7 @@
     </set>
 
     <objectAnimator
-        android:duration="@integer/step_tracker_pulse_repeat_pause"
+        android:duration="@integer/sequence_pulse_repeat_pause"
         android:propertyName="alpha"
         android:valueFrom="0f"
         android:valueTo="0f" />

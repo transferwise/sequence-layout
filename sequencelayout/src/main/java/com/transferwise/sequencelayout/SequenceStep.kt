@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TableRow
 import android.widget.TextView
-import kotlinx.android.synthetic.main.step_tracker_step.view.*
+import kotlinx.android.synthetic.main.sequence_step.view.*
 
 /**
  * Step, represented in a row inside of {@link com.transferwise.sequencelayout.SequenceLayout}.
@@ -46,7 +46,7 @@ class SequenceStep(context: Context?, attrs: AttributeSet?)
     private var isActive: Boolean = false
 
     init {
-        View.inflate(getContext(), R.layout.step_tracker_step, this)
+        View.inflate(getContext(), R.layout.sequence_step, this)
 
         clipToPadding = false
         clipChildren = false
@@ -79,7 +79,7 @@ class SequenceStep(context: Context?, attrs: AttributeSet?)
     fun setAnchor(anchor: CharSequence?) {
         this.anchor.text = anchor
         this.anchor.visibility = View.VISIBLE
-        this.anchor.minWidth = resources.getDimensionPixelSize(R.dimen.step_tracker_anchor_min_width)
+        this.anchor.minWidth = resources.getDimensionPixelSize(R.dimen.sequence_anchor_min_width)
     }
 
     /**

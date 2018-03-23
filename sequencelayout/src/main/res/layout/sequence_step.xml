@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:maxWidth="@dimen/step_tracker_anchor_max_width"
+        android:maxWidth="@dimen/sequence_anchor_max_width"
         android:paddingEnd="16dp"
         android:paddingStart="0dp"
         tools:layout_width="64dp"

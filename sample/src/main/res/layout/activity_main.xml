@@ -39,7 +39,8 @@
                 app:active="true"
                 app:anchor="Today"
                 app:subtitle="This is the subtitle of this step.\nIt should describe steps (especially the active step) in a detailed way."
-                app:title="Third step"/>
+                app:title="Third step"
+                app:titleTextAppearance="@style/TextAppearance.AppCompat.Title"/>
 
             <com.transferwise.sequencelayout.SequenceStep
                 android:layout_width="match_parent"
