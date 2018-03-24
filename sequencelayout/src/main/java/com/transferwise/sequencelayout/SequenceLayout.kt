@@ -2,6 +2,7 @@ package com.transferwise.sequencelayout
 
 import android.content.Context
 import android.content.res.TypedArray
+import android.graphics.Rect
 import android.support.annotation.ColorInt
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
@@ -172,10 +173,22 @@ public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAtt
     }
 
     private fun adaptProgressBarHeight() {
-        val layoutParams = progressBarWrapper.layoutParams
-        val lastChild = stepsWrapper.getChildAt(stepsWrapper.childCount - 1)
-        layoutParams.height = lastChild.top + lastChild.paddingTop
-        progressBarWrapper.layoutParams = layoutParams
+        val first = stepsWrapper.getChildAt(0) as SequenceStep
+        val last = stepsWrapper.getChildAt(stepsWrapper.childCount - 1) as SequenceStep
+        val height = (getRelativeTop(last.getDot(), this) + last.getDot().translationY) -
+                (getRelativeTop(first.getDot(), this) + first.getDot().translationY)
+
+        val layoutParams = progressBarWrapper.layoutParams as MarginLayoutParams
+        layoutParams.height = height.toInt()
+        layoutParams.topMargin = (getRelativeTop(first.getDot(), this) + (first.getDot().measuredHeight / 2) + first.getDot().translationY).toInt()
+        progressBarWrapper.requestLayout()
+    }
+
+    private fun getRelativeTop(child: View, parent: ViewGroup): Int {
+        val offsetViewBounds = Rect()
+        child.getDrawingRect(offsetViewBounds)
+        parent.offsetDescendantRectToMyCoords(child, offsetViewBounds)
+        return offsetViewBounds.top
     }
 
     private fun getStepOffsets(): SparseArray<View> {

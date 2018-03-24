@@ -11,8 +11,6 @@
         android:id="@+id/progressBarWrapper"
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:clipChildren="true"
         android:clipToPadding="true"
         tools:translationX="63dp">

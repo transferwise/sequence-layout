@@ -218,14 +218,21 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
     private fun verticallyCenter(vararg views: View) {
         var maxHeight = 0
         for (view in views) {
-            val height = (view as? TextView)?.lineHeight ?: view.measuredHeight
+            val height = getViewHeight(view)
             maxHeight = Math.max(maxHeight, height)
         }
         for (view in views) {
-            val height = (view as? TextView)?.lineHeight ?: view.measuredHeight
+            val height = getViewHeight(view)
             view.translationY = (maxHeight - height).toFloat() / 2
         }
     }
+
+    private fun getViewHeight(view: View) =
+            if (view is TextView) {
+                ((view.lineHeight - view.lineSpacingExtra) / view.lineSpacingMultiplier).toInt()
+            } else {
+                view.measuredHeight
+            }
 
     override fun onGlobalLayout() {
         verticallyCenter(anchor, dot, title)
