@@ -7,7 +7,6 @@ import android.support.annotation.StyleRes
 import android.support.v4.widget.TextViewCompat
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.TableRow
 import android.widget.TextView
 import kotlinx.android.synthetic.main.sequence_step.view.*
@@ -39,7 +38,7 @@ import kotlinx.android.synthetic.main.sequence_step.view.*
  * @see com.transferwise.sequencelayout.SequenceLayout
  */
 public class SequenceStep(context: Context?, attrs: AttributeSet?)
-    : TableRow(context, attrs), ViewTreeObserver.OnGlobalLayoutListener {
+    : TableRow(context, attrs) {
 
     public constructor(context: Context) : this(context, null)
 
@@ -65,8 +64,6 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
         setupSubtitleTextAppearance(attributes)
         setupActive(attributes)
 
-        viewTreeObserver.addOnGlobalLayoutListener(this)
-
         onFinishInflate()
         attributes.recycle()
     }
@@ -89,6 +86,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      */
     public fun setAnchorTextAppearance(@StyleRes resourceId: Int) {
         TextViewCompat.setTextAppearance(anchor, resourceId)
+        verticallyCenter(anchor, title)
     }
 
     /**
@@ -117,6 +115,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      */
     public fun setTitleTextAppearance(@StyleRes resourceId: Int) {
         TextViewCompat.setTextAppearance(title, resourceId)
+        verticallyCenter(anchor, title)
     }
 
     /**
@@ -165,9 +164,8 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
         this.isActive = isActive
     }
 
-    internal fun getDot(): SequenceStepDot {
-        return dot
-    }
+    fun getDotOffset(): Int =
+            (Math.max(getViewHeight(anchor), getViewHeight(title)) - 8.toPx()) / 2 //TODO dynamic dot height
 
     private fun setupAnchor(attributes: TypedArray) {
         if (!attributes.hasValue(R.styleable.SequenceStep_anchor)) {
@@ -223,7 +221,8 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
         }
         for (view in views) {
             val height = getViewHeight(view)
-            view.translationY = (maxHeight - height).toFloat() / 2
+            (view.layoutParams as MarginLayoutParams).topMargin = (maxHeight - height) / 2
+            view.requestLayout()
         }
     }
 
@@ -234,8 +233,4 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
                 view.measuredHeight
             }
 
-    override fun onGlobalLayout() {
-        verticallyCenter(anchor, dot, title)
-        viewTreeObserver.removeOnGlobalLayoutListener(this)
-    }
 }

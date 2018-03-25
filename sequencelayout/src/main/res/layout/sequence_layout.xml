@@ -11,8 +11,8 @@
         android:id="@+id/progressBarWrapper"
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:clipChildren="true"
-        android:clipToPadding="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         tools:translationX="63dp">
 
         <View
@@ -32,6 +32,13 @@
             tools:background="?colorPrimary"
             tools:scaleY="0.3f"
             tools:visibility="visible"/>
+
+        <FrameLayout
+            android:id="@+id/dotsWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"/>
 
     </FrameLayout>
 

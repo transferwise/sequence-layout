@@ -44,14 +44,14 @@ internal class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyle
                     with(GradientDrawable()) {
                         shape = OVAL
                         setColor(color)
-                        setStroke(1.toDp, Color.TRANSPARENT)
+                        setStroke(1.toPx(), Color.TRANSPARENT)
                         this
                     })
             addState(intArrayOf(),
                     with(GradientDrawable()) {
                         shape = OVAL
                         setColor(progressBackgroundColor)
-                        setStroke(1.toDp, Color.TRANSPARENT)
+                        setStroke(1.toPx(), Color.TRANSPARENT)
                         this
                     })
             dotView.background = this
@@ -64,6 +64,18 @@ internal class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyle
             setColor(color)
             pulseView.background = this
         }
+    }
+
+    private fun setupAnimator() {
+        pulseAnimator = AnimatorInflater.loadAnimator(context, R.animator.fading_pulse) as AnimatorSet
+        pulseAnimator!!.setTarget(pulseView)
+        pulseAnimator!!.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animator: Animator) {
+                if (isActivated) {
+                    animator.start()
+                }
+            }
+        })
     }
 
     private fun startAnimation() {
@@ -84,18 +96,6 @@ internal class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyle
         }
         pulseAnimator!!.end()
         pulseView.visibility = GONE
-    }
-
-    private fun setupAnimator() {
-        pulseAnimator = AnimatorInflater.loadAnimator(context, R.animator.fading_pulse) as AnimatorSet
-        pulseAnimator!!.setTarget(pulseView)
-        pulseAnimator!!.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animator: Animator) {
-                if (isActivated) {
-                    animator.start()
-                }
-            }
-        })
     }
 
     override fun setActivated(activated: Boolean) {

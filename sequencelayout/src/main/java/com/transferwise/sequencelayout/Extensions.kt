@@ -1,6 +1,8 @@
 package com.transferwise.sequencelayout
 
 import android.content.res.Resources
+import android.view.ViewGroup
 
-val Int.toDp: Int
-    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+fun Int.toPx() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+fun ViewGroup.children() = 0.until(childCount).map { getChildAt(it) }
