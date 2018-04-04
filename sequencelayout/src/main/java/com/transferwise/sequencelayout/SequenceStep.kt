@@ -64,7 +64,6 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
         setupSubtitleTextAppearance(attributes)
         setupActive(attributes)
 
-        onFinishInflate()
         attributes.recycle()
     }
 

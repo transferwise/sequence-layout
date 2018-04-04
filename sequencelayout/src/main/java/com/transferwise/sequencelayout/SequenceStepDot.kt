@@ -26,7 +26,6 @@ internal class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyle
     init {
         View.inflate(getContext(), R.layout.sequence_dot, this)
         isEnabled = false
-        onFinishInflate()
     }
 
     internal fun setDotBackground(@ColorInt color: Int, @ColorInt progressBackgroundColor: Int) {

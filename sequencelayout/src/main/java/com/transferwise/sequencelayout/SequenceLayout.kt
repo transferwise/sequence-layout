@@ -6,7 +6,6 @@ import android.graphics.Rect
 import android.support.annotation.ColorInt
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +56,6 @@ public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAtt
         clipToPadding = false
         clipChildren = false
 
-        onFinishInflate()
         start()
     }
 
@@ -243,14 +241,13 @@ public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAtt
     }
 
     override fun onGlobalLayout() {
-        Log.d("testcount", stepsWrapper.childCount.toString())
-        handler.postDelayed({
-            if (stepsWrapper.childCount > 0) {
-                setProgressBarHorizontalOffset()
-                placeDots()
+        if (stepsWrapper.childCount > 0) {
+            setProgressBarHorizontalOffset()
+            placeDots()
+            post({
                 animateToActive()
                 viewTreeObserver.removeOnGlobalLayoutListener(this)
-            }
-        }, 500)
+            })
+        }
     }
 }
