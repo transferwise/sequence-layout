@@ -115,7 +115,7 @@ public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAtt
             val item = adapter.getItem(i)
             val view = SequenceStep(context)
             adapter.bindView(view, item)
-            stepsWrapper.addView(view)
+            addView(view)
         }
         start()
     }
