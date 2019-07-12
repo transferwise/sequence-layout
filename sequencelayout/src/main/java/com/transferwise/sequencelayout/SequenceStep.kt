@@ -2,9 +2,9 @@ package com.transferwise.sequencelayout
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.support.annotation.StringRes
-import android.support.annotation.StyleRes
-import android.support.v4.widget.TextViewCompat
+import androidx.annotation.StringRes
+import androidx.annotation.StyleRes
+import androidx.core.widget.TextViewCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TableRow

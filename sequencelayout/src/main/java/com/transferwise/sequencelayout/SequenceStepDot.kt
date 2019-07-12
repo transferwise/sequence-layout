@@ -9,7 +9,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.GradientDrawable.OVAL
 import android.graphics.drawable.StateListDrawable
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout

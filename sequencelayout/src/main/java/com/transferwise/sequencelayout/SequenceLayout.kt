@@ -3,8 +3,8 @@ package com.transferwise.sequencelayout
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Rect
-import android.support.annotation.ColorInt
-import android.support.annotation.StyleRes
+import androidx.annotation.ColorInt
+import androidx.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
