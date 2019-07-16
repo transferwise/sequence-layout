@@ -15,7 +15,7 @@ import android.view.View
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.sequence_dot.view.*
 
-internal class SequenceStepDot(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
+internal class SequenceStepDot(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     : FrameLayout(context, attrs, defStyleAttr) {
 
     constructor(context: Context) : this(context, null)

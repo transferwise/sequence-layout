@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.sequence_layout.view.*
  *
  * @see com.transferwise.sequencelayout.SequenceStep
  */
-public class SequenceLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
+public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     : FrameLayout(context, attrs, defStyleAttr), ViewTreeObserver.OnGlobalLayoutListener {
 
     public constructor(context: Context) : this(context, null)
