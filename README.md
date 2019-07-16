@@ -81,6 +81,8 @@ Custom attributes for `SequenceStep`:
 | --- | --- |
 | `active` | boolean to indicate if step is active. There should only be one active step per `SequenceLayout`. |
 | `anchor` | text for the left side of the step |
+| `anchorMinWidth` | minimum width for the left side of the step |
+| `anchorMaxWidth` | maximum width for the left side of the step |
 | `anchorTextAppearance` | styling for the left side of the step |
 | `title` | title of the step |
 | `titleTextAppearance` | styling for the title of the step |
