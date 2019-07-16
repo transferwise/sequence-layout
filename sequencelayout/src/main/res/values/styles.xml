@@ -14,6 +14,8 @@
         <attr name="subtitle" format="string"/>
         <attr name="subtitleTextAppearance" format="reference"/>
         <attr name="active" format="boolean"/>
+        <attr name="anchorMinWidth" format="dimension"/>
+        <attr name="anchorMaxWidth" format="dimension"/>
     </declare-styleable>
 
     <style name="SequenceLayout">
@@ -25,6 +27,8 @@
         <item name="anchorTextAppearance">@style/TextAppearance.AppCompat.Small</item>
         <item name="titleTextAppearance">@style/TextAppearance.AppCompat.Small</item>
         <item name="subtitleTextAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="anchorMinWidth">@dimen/sequence_anchor_min_width</item>
+        <item name="anchorMaxWidth">@dimen/sequence_anchor_max_width</item>
     </style>
 
 </resources>

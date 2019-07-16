@@ -2,14 +2,16 @@ package com.transferwise.sequencelayout
 
 import android.content.Context
 import android.content.res.TypedArray
-import androidx.annotation.StringRes
-import androidx.annotation.StyleRes
-import androidx.core.widget.TextViewCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.annotation.Dimension
+import androidx.annotation.StringRes
+import androidx.annotation.StyleRes
+import androidx.core.widget.TextViewCompat
 import kotlinx.android.synthetic.main.sequence_step.view.*
+import kotlin.math.max
 
 /**
  * Step, represented in a row inside of {@link com.transferwise.sequencelayout.SequenceLayout}.
@@ -20,6 +22,8 @@ import kotlinx.android.synthetic.main.sequence_step.view.*
  *      android:layout_height="wrap_content"
  *      app:active="true"
  *      app:anchor="Anchor"
+ *      app:anchorMinWidth="20dp"
+ *      app:anchorMaxWidth="80dp"
  *      app:anchorTextAppearance="@style/TextAppearance.AppCompat.Small"
  *      app:subtitle="This is a subtitle"
  *      app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -28,6 +32,9 @@ import kotlinx.android.synthetic.main.sequence_step.view.*
  * </pre>
  *
  * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_anchor
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_anchorTextAppearance
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_anchorMinWidth
+ * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_anchorMaxWidth
  * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_anchorTextAppearance
  * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_title
  * @attr ref com.transferwise.sequencelayout.R.styleable#SequenceStep_titleTextAppearance
@@ -57,6 +64,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
                 R.style.SequenceStep)
 
         setupAnchor(attributes)
+        setupAnchorWidth(attributes)
         setupAnchorTextAppearance(attributes)
         setupTitle(attributes)
         setupTitleTextAppearance(attributes)
@@ -76,6 +84,20 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
         this.anchor.text = anchor
         this.anchor.visibility = View.VISIBLE
         this.anchor.minWidth = resources.getDimensionPixelSize(R.dimen.sequence_anchor_min_width)
+    }
+
+    /**
+     * Sets the anchor max width
+     */
+    public fun setAnchorMaxWidth(@Dimension(unit = Dimension.PX) maxWidth: Int) {
+        anchor.maxWidth = maxWidth
+    }
+
+    /**
+     * Sets the anchor min width
+     */
+    public fun setAnchorMinWidth(@Dimension(unit = Dimension.PX) minWidth: Int) {
+        anchor.minWidth = minWidth
     }
 
     /**
@@ -164,7 +186,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
     }
 
     fun getDotOffset(): Int =
-            (Math.max(getViewHeight(anchor), getViewHeight(title)) - 8.toPx()) / 2 //TODO dynamic dot height
+        (max(getViewHeight(anchor), getViewHeight(title)) - 8.toPx()) / 2 //TODO dynamic dot height
 
     private fun setupAnchor(attributes: TypedArray) {
         if (!attributes.hasValue(R.styleable.SequenceStep_anchor)) {
@@ -172,6 +194,11 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
         } else {
             setAnchor(attributes.getString(R.styleable.SequenceStep_anchor))
         }
+    }
+
+    private fun setupAnchorWidth(attributes: TypedArray) {
+        setAnchorMinWidth(attributes.getDimensionPixelSize(R.styleable.SequenceStep_anchorMinWidth, 0))
+        setAnchorMaxWidth(attributes.getDimensionPixelSize(R.styleable.SequenceStep_anchorMaxWidth, Integer.MAX_VALUE))
     }
 
     private fun setupSubtitle(attributes: TypedArray) {
@@ -213,12 +240,9 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
     }
 
     private fun verticallyCenter(vararg views: View) {
-        var maxHeight = 0
-        for (view in views) {
-            val height = getViewHeight(view)
-            maxHeight = Math.max(maxHeight, height)
-        }
-        for (view in views) {
+        val maxHeight = views.map(::getViewHeight).max() ?: 0
+
+        views.forEach { view ->
             val height = getViewHeight(view)
             (view.layoutParams as MarginLayoutParams).topMargin = (maxHeight - height) / 2
             view.requestLayout()
@@ -231,5 +255,4 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
             } else {
                 view.measuredHeight
             }
-
 }
