@@ -3,15 +3,16 @@ package com.transferwise.sequencelayout
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Rect
-import androidx.annotation.ColorInt
-import androidx.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
+import androidx.annotation.ColorInt
+import androidx.annotation.StyleRes
+import androidx.core.view.ViewCompat
+import androidx.core.view.doOnPreDraw
 import kotlinx.android.synthetic.main.sequence_layout.view.*
 
 /**
@@ -37,7 +38,7 @@ import kotlinx.android.synthetic.main.sequence_layout.view.*
  * @see com.transferwise.sequencelayout.SequenceStep
  */
 public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
-    : FrameLayout(context, attrs, defStyleAttr), ViewTreeObserver.OnGlobalLayoutListener {
+    : FrameLayout(context, attrs, defStyleAttr) {
 
     public constructor(context: Context) : this(context, null)
     public constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -55,19 +56,12 @@ public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr
 
         clipToPadding = false
         clipChildren = false
-
-        start()
     }
 
     @ColorInt
     private var progressBackgroundColor: Int = 0
     @ColorInt
     private var progressForegroundColor: Int = 0
-
-    public fun start() {
-        removeCallbacks(animateToActive)
-        viewTreeObserver.addOnGlobalLayoutListener(this)
-    }
 
     public fun setStyle(@StyleRes defStyleAttr: Int) {
         val attributes = context.theme.obtainStyledAttributes(defStyleAttr, R.styleable.SequenceLayout)
@@ -108,7 +102,7 @@ public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr
      * Replaces all contained [com.transferwise.sequencelayout.SequenceStep]s with those provided and bound by the adapter
      */
     public fun <T> setAdapter(adapter: SequenceAdapter<T>) where T : Any {
-        stop()
+        removeCallbacks(animateToActive)
         removeAllSteps()
         val count = adapter.getCount()
         for (i in 0 until count) {
@@ -117,7 +111,6 @@ public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr
             adapter.bindView(view, item)
             addView(view)
         }
-        start()
     }
 
     private fun applyAttributes(attributes: TypedArray) {
@@ -186,13 +179,12 @@ public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr
             val scaleEnd = (activeDotTopMargin + (activeDot.measuredHeight / 2) - progressBarForegroundTopMargin) /
                     progressBarBackground.measuredHeight.toFloat()
 
-            progressBarForeground
-                    .animate()
+            ViewCompat.animate(progressBarForeground)
                     .setStartDelay(resources.getInteger(R.integer.sequence_step_duration).toLong())
                     .scaleY(scaleEnd)
                     .setInterpolator(LinearInterpolator())
                     .setDuration(activeStepIndex * resources.getInteger(R.integer.sequence_step_duration).toLong())
-                    .setUpdateListener({
+                    .setUpdateListener {
                         val animatedOffset = progressBarForeground.scaleY * progressBarBackground.measuredHeight
                         dotsWrapper
                                 .children()
@@ -212,7 +204,7 @@ public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr
                                         }
                                     }
                                 }
-                    })
+                    }
                     .start()
         }
     }
@@ -222,11 +214,6 @@ public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr
         child.getDrawingRect(offsetViewBounds)
         parent.offsetDescendantRectToMyCoords(child, offsetViewBounds)
         return offsetViewBounds.top
-    }
-
-    private fun stop() {
-        removeCallbacks(animateToActive)
-        viewTreeObserver.removeOnGlobalLayoutListener(this)
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
@@ -240,17 +227,14 @@ public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr
                 )
             }
             stepsWrapper.addView(child, params)
+            child.doOnPreDraw {
+                setProgressBarHorizontalOffset()
+                placeDots()
+                removeCallbacks(animateToActive)
+                post(animateToActive)
+            }
             return
         }
         super.addView(child, index, params)
-    }
-
-    override fun onGlobalLayout() {
-        if (stepsWrapper.childCount > 0) {
-            setProgressBarHorizontalOffset()
-            placeDots()
-            viewTreeObserver.removeOnGlobalLayoutListener(this)
-            post(animateToActive)
-        }
     }
 }
