@@ -240,7 +240,7 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
     }
 
     private fun verticallyCenter(vararg views: View) {
-        val maxHeight = views.map(::getViewHeight).max() ?: 0
+        val maxHeight = views.map(::getViewHeight).maxOrNull() ?: 0
 
         views.forEach { view ->
             val height = getViewHeight(view)
