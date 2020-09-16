@@ -13,8 +13,8 @@ android {
     defaultConfig {
         minSdkVersion(Versions.MIN_SDK)
         targetSdkVersion(Versions.SDK)
-        versionCode = 11
-        versionName = "1.0.11"
+        versionCode = 12
+        versionName = "1.1.0"
         setProperty("archivesBaseName", "com.transferwise.sequencelayout-${versionName}")
     }
 
