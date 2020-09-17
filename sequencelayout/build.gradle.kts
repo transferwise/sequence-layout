@@ -13,7 +13,7 @@ android {
         targetSdkVersion(Versions.SDK)
         versionCode = 13
         versionName = "1.1.1"
-        setProperty("archivesBaseName", "com.transferwise.sequencelayout")
+        setProperty("archivesBaseName", "com.transferwise.sequencelayout-${versionName}")
     }
 
     buildTypes {
