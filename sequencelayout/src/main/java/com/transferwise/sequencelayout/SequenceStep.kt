@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.annotation.Dimension
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.core.view.doOnPreDraw
 import androidx.core.widget.TextViewCompat
 import kotlinx.android.synthetic.main.sequence_step.view.*
 import kotlin.math.max
@@ -50,9 +51,10 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
     public constructor(context: Context) : this(context, null)
 
     private var isActive: Boolean = false
+    internal var onStepChangedListener: OnStepChangedListener? = null
 
     init {
-        View.inflate(getContext(), R.layout.sequence_step, this)
+        View.inflate(context, R.layout.sequence_step, this)
 
         clipToPadding = false
         clipChildren = false
@@ -183,10 +185,16 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
      */
     public fun setActive(isActive: Boolean) {
         this.isActive = isActive
+        doOnPreDraw { onStepChangedListener?.onStepChanged() }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        doOnPreDraw { onStepChangedListener?.onStepChanged() }
     }
 
     fun getDotOffset(): Int =
-        (max(getViewHeight(anchor), getViewHeight(title)) - 8.toPx()) / 2 //TODO dynamic dot height
+            (max(getViewHeight(anchor), getViewHeight(title)) - 8.toPx()) / 2 //TODO dynamic dot height
 
     private fun setupAnchor(attributes: TypedArray) {
         if (!attributes.hasValue(R.styleable.SequenceStep_anchor)) {
@@ -255,4 +263,8 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
             } else {
                 view.measuredHeight
             }
+
+    internal interface OnStepChangedListener {
+        fun onStepChanged()
+    }
 }

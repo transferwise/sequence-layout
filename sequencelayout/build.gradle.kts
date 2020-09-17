@@ -5,17 +5,15 @@ plugins {
     id("com.github.dcendents.android-maven")
 }
 
-group="com.github.transferwise"
-
 android {
     compileSdkVersion(Versions.SDK)
 
     defaultConfig {
         minSdkVersion(Versions.MIN_SDK)
         targetSdkVersion(Versions.SDK)
-        versionCode = 12
-        versionName = "1.1.0"
-        setProperty("archivesBaseName", "com.transferwise.sequencelayout-${versionName}")
+        versionCode = 13
+        versionName = "1.1.1"
+        setProperty("archivesBaseName", "com.transferwise.sequencelayout")
     }
 
     buildTypes {
@@ -34,6 +32,9 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
+
+group = "com.github.transferwise"
+version = android.defaultConfig.versionName.orEmpty()
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.KOTLIN}")

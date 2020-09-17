@@ -12,7 +12,6 @@ import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import androidx.core.view.ViewCompat
-import androidx.core.view.doOnPreDraw
 import kotlinx.android.synthetic.main.sequence_layout.view.*
 
 /**
@@ -38,7 +37,7 @@ import kotlinx.android.synthetic.main.sequence_layout.view.*
  * @see com.transferwise.sequencelayout.SequenceStep
  */
 public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
-    : FrameLayout(context, attrs, defStyleAttr) {
+    : FrameLayout(context, attrs, defStyleAttr), SequenceStep.OnStepChangedListener {
 
     public constructor(context: Context) : this(context, null)
     public constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -226,15 +225,17 @@ public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr
                         resources.getDimensionPixelSize(R.dimen.sequence_active_step_padding_bottom)
                 )
             }
+            child.onStepChangedListener = this
             stepsWrapper.addView(child, params)
-            child.doOnPreDraw {
-                setProgressBarHorizontalOffset()
-                placeDots()
-                removeCallbacks(animateToActive)
-                post(animateToActive)
-            }
             return
         }
         super.addView(child, index, params)
+    }
+
+    override fun onStepChanged() {
+        setProgressBarHorizontalOffset()
+        placeDots()
+        removeCallbacks(animateToActive)
+        post(animateToActive)
     }
 }
