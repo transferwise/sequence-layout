@@ -31,14 +31,40 @@ android {
     }
 }
 
+ext {
+    PUBLISH_GROUP_ID = "com.github.transferwise"
+    PUBLISH_ARTIFACT_ID = "sequence-layout"
+    PUBLISH_VERSION = "1.1.1"
+}
+
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.github.transferwise'
-                artifactId = 'sequence-layout'
-                version = '1.1.1'
+
+                groupId = PUBLISH_GROUP_ID
+                artifactId = PUBLISH_ARTIFACT_ID
+                version = PUBLISH_VERSION
+
+                pom {
+                    name = PUBLISH_ARTIFACT_ID
+                    url = "https://github.com/transferwise/sequence-layout"
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+                    scm {
+                        connection = "scm:git:github.com/transferwise/sequence-layout.git"
+                        developerConnection = "scm:git:ssh://github.com/transferwise/sequence-layout.git"
+                        url = "https://github.com/transferwise/sequence-layout/tree/master"
+                    }
+                }
             }
         }
     }
