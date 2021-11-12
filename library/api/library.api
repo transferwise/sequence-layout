@@ -11,7 +11,6 @@ public abstract class com/transferwise/sequencelayout/SequenceAdapter {
 }
 
 public final class com/transferwise/sequencelayout/SequenceLayout : android/widget/FrameLayout, com/transferwise/sequencelayout/SequenceStep$OnStepChangedListener {
-	public field _$_findViewCache Ljava/util/Map;
 	public fun <init> (Landroid/content/Context;)V
 	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
 	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
@@ -27,7 +26,6 @@ public final class com/transferwise/sequencelayout/SequenceLayout : android/widg
 }
 
 public final class com/transferwise/sequencelayout/SequenceStep : android/widget/TableRow {
-	public field _$_findViewCache Ljava/util/Map;
 	public fun <init> (Landroid/content/Context;)V
 	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
 	public fun _$_clearFindViewByIdCache ()V
@@ -54,7 +52,6 @@ public abstract interface class com/transferwise/sequencelayout/SequenceStep$OnS
 }
 
 public final class com/transferwise/sequencelayout/SequenceStepDot : android/widget/FrameLayout {
-	public field _$_findViewCache Ljava/util/Map;
 	public fun <init> (Landroid/content/Context;)V
 	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
 	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
