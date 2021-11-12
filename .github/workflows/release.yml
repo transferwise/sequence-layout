@@ -1,0 +1,12 @@
+name: Release
+on:
+  release:
+    types: [created]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Run Tests
+        run: ./gradlew publish --stacktrace
