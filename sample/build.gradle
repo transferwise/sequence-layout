@@ -1,0 +1,18 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+}
+
+android {
+    compileSdkVersion(31)
+    defaultConfig {
+        minSdkVersion(16)
+        targetSdkVersion(31)
+        applicationId = "com.transferwise.sequencelayout.sample"
+    }
+}
+
+dependencies {
+    implementation(project(":library"))
+    implementation("androidx.appcompat:appcompat:1.2.0")
+}
