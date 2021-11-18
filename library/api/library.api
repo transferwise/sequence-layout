@@ -1,0 +1,68 @@
+public final class com/transferwise/sequencelayout/ExtensionsKt {
+	public static final fun children (Landroid/view/ViewGroup;)Ljava/util/List;
+	public static final fun toPx (I)I
+}
+
+public abstract class com/transferwise/sequencelayout/SequenceAdapter {
+	public fun <init> ()V
+	public abstract fun bindView (Lcom/transferwise/sequencelayout/SequenceStep;Ljava/lang/Object;)V
+	public abstract fun getCount ()I
+	public abstract fun getItem (I)Ljava/lang/Object;
+}
+
+public final class com/transferwise/sequencelayout/SequenceLayout : android/widget/FrameLayout, com/transferwise/sequencelayout/SequenceStep$OnStepChangedListener {
+	public field _$_findViewCache Ljava/util/Map;
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public fun _$_clearFindViewByIdCache ()V
+	public fun _$_findCachedViewById (I)Landroid/view/View;
+	public fun addView (Landroid/view/View;ILandroid/view/ViewGroup$LayoutParams;)V
+	public fun onStepChanged ()V
+	public final fun removeAllSteps ()V
+	public final fun setAdapter (Lcom/transferwise/sequencelayout/SequenceAdapter;)V
+	public final fun setProgressBackgroundColor (I)V
+	public final fun setProgressForegroundColor (I)V
+	public final fun setStyle (I)V
+}
+
+public final class com/transferwise/sequencelayout/SequenceStep : android/widget/TableRow {
+	public field _$_findViewCache Ljava/util/Map;
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun _$_clearFindViewByIdCache ()V
+	public fun _$_findCachedViewById (I)Landroid/view/View;
+	public final fun getDotOffset ()I
+	public final fun getOnStepChangedListener$com_transferwise_sequencelayout_null_release ()Lcom/transferwise/sequencelayout/SequenceStep$OnStepChangedListener;
+	public final fun isActive ()Z
+	public final fun setActive (Z)V
+	public final fun setAnchor (Ljava/lang/CharSequence;)V
+	public final fun setAnchorMaxWidth (I)V
+	public final fun setAnchorMinWidth (I)V
+	public final fun setAnchorTextAppearance (I)V
+	public final fun setOnStepChangedListener$com_transferwise_sequencelayout_null_release (Lcom/transferwise/sequencelayout/SequenceStep$OnStepChangedListener;)V
+	public final fun setSubtitle (I)V
+	public final fun setSubtitle (Ljava/lang/CharSequence;)V
+	public final fun setSubtitleTextAppearance (I)V
+	public final fun setTitle (I)V
+	public final fun setTitle (Ljava/lang/CharSequence;)V
+	public final fun setTitleTextAppearance (I)V
+}
+
+public abstract interface class com/transferwise/sequencelayout/SequenceStep$OnStepChangedListener {
+	public abstract fun onStepChanged ()V
+}
+
+public final class com/transferwise/sequencelayout/SequenceStepDot : android/widget/FrameLayout {
+	public field _$_findViewCache Ljava/util/Map;
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public fun _$_clearFindViewByIdCache ()V
+	public fun _$_findCachedViewById (I)Landroid/view/View;
+	public fun setActivated (Z)V
+	public final fun setDotBackground$com_transferwise_sequencelayout_null_release (II)V
+	public fun setEnabled (Z)V
+	public final fun setPulseColor$com_transferwise_sequencelayout_null_release (I)V
+}
+
