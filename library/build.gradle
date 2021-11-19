@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("maven-publish")
+    id("org.jetbrains.kotlinx.binary-compatibility-validator")  version "0.5.0"
 }
 
 android {
