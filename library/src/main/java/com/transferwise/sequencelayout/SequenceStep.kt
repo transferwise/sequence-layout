@@ -3,6 +3,7 @@ package com.transferwise.sequencelayout
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TableRow
 import android.widget.TextView
@@ -11,7 +12,6 @@ import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.core.view.doOnPreDraw
 import androidx.core.widget.TextViewCompat
-import kotlinx.android.synthetic.main.sequence_step.view.*
 import kotlin.math.max
 
 /**
@@ -45,8 +45,7 @@ import kotlin.math.max
  *
  * @see com.transferwise.sequencelayout.SequenceLayout
  */
-public class SequenceStep(context: Context?, attrs: AttributeSet?)
-    : TableRow(context, attrs) {
+public class SequenceStep(context: Context?, attrs: AttributeSet?) : TableRow(context, attrs) {
 
     public constructor(context: Context) : this(context, null)
 
@@ -54,16 +53,23 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
     internal var onStepChangedListener: OnStepChangedListener? = null
 
     init {
-        View.inflate(context, R.layout.sequence_step, this)
+        LayoutInflater.from(getContext()).inflate(R.layout.sequence_step, this, true)
+    }
 
+    private val anchor = findViewById<TextView>(R.id.anchor)
+    private val title = findViewById<TextView>(R.id.title)
+    private val subtitle = findViewById<TextView>(R.id.subtitle)
+
+    init {
         clipToPadding = false
         clipChildren = false
 
         val attributes = getContext().theme.obtainStyledAttributes(
-                attrs,
-                R.styleable.SequenceStep,
-                0,
-                R.style.SequenceStep)
+            attrs,
+            R.styleable.SequenceStep,
+            0,
+            R.style.SequenceStep
+        )
 
         setupAnchor(attributes)
         setupAnchorWidth(attributes)
@@ -194,7 +200,10 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
     }
 
     fun getDotOffset(): Int =
-            (max(getViewHeight(anchor), getViewHeight(title)) - 8.toPx()) / 2 //TODO dynamic dot height
+        (max(
+            getViewHeight(anchor),
+            getViewHeight(title)
+        ) - 8.toPx()) / 2 //TODO dynamic dot height
 
     private fun setupAnchor(attributes: TypedArray) {
         if (!attributes.hasValue(R.styleable.SequenceStep_anchor)) {
@@ -205,8 +214,18 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
     }
 
     private fun setupAnchorWidth(attributes: TypedArray) {
-        setAnchorMinWidth(attributes.getDimensionPixelSize(R.styleable.SequenceStep_anchorMinWidth, 0))
-        setAnchorMaxWidth(attributes.getDimensionPixelSize(R.styleable.SequenceStep_anchorMaxWidth, Integer.MAX_VALUE))
+        setAnchorMinWidth(
+            attributes.getDimensionPixelSize(
+                R.styleable.SequenceStep_anchorMinWidth,
+                0
+            )
+        )
+        setAnchorMaxWidth(
+            attributes.getDimensionPixelSize(
+                R.styleable.SequenceStep_anchorMaxWidth,
+                Integer.MAX_VALUE
+            )
+        )
     }
 
     private fun setupSubtitle(attributes: TypedArray) {
@@ -227,19 +246,34 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
 
     private fun setupTitleTextAppearance(attributes: TypedArray) {
         if (attributes.hasValue(R.styleable.SequenceStep_titleTextAppearance)) {
-            setTitleTextAppearance(attributes.getResourceId(R.styleable.SequenceStep_titleTextAppearance, 0))
+            setTitleTextAppearance(
+                attributes.getResourceId(
+                    R.styleable.SequenceStep_titleTextAppearance,
+                    0
+                )
+            )
         }
     }
 
     private fun setupSubtitleTextAppearance(attributes: TypedArray) {
         if (attributes.hasValue(R.styleable.SequenceStep_subtitleTextAppearance)) {
-            setSubtitleTextAppearance(attributes.getResourceId(R.styleable.SequenceStep_subtitleTextAppearance, 0))
+            setSubtitleTextAppearance(
+                attributes.getResourceId(
+                    R.styleable.SequenceStep_subtitleTextAppearance,
+                    0
+                )
+            )
         }
     }
 
     private fun setupAnchorTextAppearance(attributes: TypedArray) {
         if (attributes.hasValue(R.styleable.SequenceStep_anchorTextAppearance)) {
-            setAnchorTextAppearance(attributes.getResourceId(R.styleable.SequenceStep_anchorTextAppearance, 0))
+            setAnchorTextAppearance(
+                attributes.getResourceId(
+                    R.styleable.SequenceStep_anchorTextAppearance,
+                    0
+                )
+            )
         }
     }
 
@@ -258,11 +292,11 @@ public class SequenceStep(context: Context?, attrs: AttributeSet?)
     }
 
     private fun getViewHeight(view: View) =
-            if (view is TextView) {
-                ((view.lineHeight - view.lineSpacingExtra) / view.lineSpacingMultiplier).toInt()
-            } else {
-                view.measuredHeight
-            }
+        if (view is TextView) {
+            ((view.lineHeight - view.lineSpacingExtra) / view.lineSpacingMultiplier).toInt()
+        } else {
+            view.measuredHeight
+        }
 
     internal interface OnStepChangedListener {
         fun onStepChanged()
