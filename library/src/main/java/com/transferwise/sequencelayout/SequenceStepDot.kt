@@ -11,12 +11,12 @@ import android.graphics.drawable.GradientDrawable.OVAL
 import android.graphics.drawable.StateListDrawable
 import androidx.annotation.ColorInt
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.sequence_dot.view.*
 
-internal class SequenceStepDot(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
-    : FrameLayout(context, attrs, defStyleAttr) {
+internal class SequenceStepDot(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
+    FrameLayout(context, attrs, defStyleAttr) {
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -24,7 +24,13 @@ internal class SequenceStepDot(context: Context, attrs: AttributeSet?, defStyleA
     private var pulseAnimator: AnimatorSet? = null
 
     init {
-        View.inflate(getContext(), R.layout.sequence_dot, this)
+        LayoutInflater.from(getContext()).inflate(R.layout.sequence_dot, this, true)
+    }
+
+    private val dotView = findViewById<View>(R.id.dotView)
+    private val pulseView = findViewById<View>(R.id.pulseView)
+
+    init {
         isEnabled = false
     }
 
@@ -34,25 +40,25 @@ internal class SequenceStepDot(context: Context, attrs: AttributeSet?, defStyleA
             setExitFadeDuration(resources.getInteger(R.integer.sequence_step_duration))
 
             addState(intArrayOf(android.R.attr.state_activated),
-                    with(GradientDrawable()) {
-                        shape = OVAL
-                        setColor(color)
-                        this
-                    })
+                with(GradientDrawable()) {
+                    shape = OVAL
+                    setColor(color)
+                    this
+                })
             addState(intArrayOf(android.R.attr.state_enabled),
-                    with(GradientDrawable()) {
-                        shape = OVAL
-                        setColor(color)
-                        setStroke(1.toPx(), Color.TRANSPARENT)
-                        this
-                    })
+                with(GradientDrawable()) {
+                    shape = OVAL
+                    setColor(color)
+                    setStroke(1.toPx(), Color.TRANSPARENT)
+                    this
+                })
             addState(intArrayOf(),
-                    with(GradientDrawable()) {
-                        shape = OVAL
-                        setColor(progressBackgroundColor)
-                        setStroke(1.toPx(), Color.TRANSPARENT)
-                        this
-                    })
+                with(GradientDrawable()) {
+                    shape = OVAL
+                    setColor(progressBackgroundColor)
+                    setStroke(1.toPx(), Color.TRANSPARENT)
+                    this
+                })
             dotView.background = this
         }
     }
