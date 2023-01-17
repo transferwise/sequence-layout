@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdkVersion(33)
     defaultConfig {
-        minSdkVersion(16)
-        targetSdkVersion(31)
+        minSdkVersion(21)
+        targetSdkVersion(33)
         applicationId = "com.transferwise.sequencelayout.sample"
     }
     compileOptions {
@@ -18,5 +18,5 @@ android {
 
 dependencies {
     implementation(project(":library"))
-    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.appcompat:appcompat:1.6.0")
 }

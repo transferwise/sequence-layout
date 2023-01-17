@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdkVersion(33)
 
     defaultConfig {
-        minSdkVersion(16)
-        targetSdkVersion(31)
+        minSdkVersion(21)
+        targetSdkVersion(33)
         setProperty("archivesBaseName", "com.transferwise.sequencelayout-${versionName}")
     }
 
@@ -29,12 +29,20 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.0-alpha02"
+    }
 }
 
 ext {
     PUBLISH_GROUP_ID = "com.github.transferwise"
     PUBLISH_ARTIFACT_ID = "sequence-layout"
-    PUBLISH_VERSION = "1.1.1"
+    PUBLISH_VERSION = "1.3.0"
 }
 
 group = PUBLISH_GROUP_ID
@@ -71,6 +79,13 @@ afterEvaluate {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.core:core-ktx:1.7.0")
+    implementation platform('androidx.compose:compose-bom:2023.01.00')
+
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-tooling")
+
+    implementation("androidx.appcompat:appcompat:1.6.0")
+    implementation("androidx.core:core-ktx:1.9.0")
 }
