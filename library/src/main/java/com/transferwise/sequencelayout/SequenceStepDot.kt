@@ -72,34 +72,38 @@ internal class SequenceStepDot(context: Context, attrs: AttributeSet?, defStyleA
     }
 
     private fun setupAnimator() {
-        pulseAnimator = AnimatorInflater.loadAnimator(context, R.animator.fading_pulse) as AnimatorSet
-        pulseAnimator!!.setTarget(pulseView)
-        pulseAnimator!!.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animator: Animator) {
-                if (isActivated) {
-                    animator.start()
-                }
+        pulseAnimator =
+            (AnimatorInflater.loadAnimator(context, R.animator.fading_pulse) as AnimatorSet).apply {
+                setTarget(pulseView)
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animator: Animator) {
+                        if (isActivated) {
+                            animator.start()
+                        }
+                    }
+                })
+                start()
             }
-        })
     }
 
     private fun startAnimation() {
-        if (pulseAnimator == null) {
-            setupAnimator()
+        pulseAnimator.let {
+            if (it == null) {
+                setupAnimator()
+            } else if (it.isStarted) {
+                return
+            }
+            pulseView.visibility = VISIBLE
         }
-        if (pulseAnimator!!.isStarted) {
-            return
-        }
-
-        pulseView.visibility = VISIBLE
-        pulseAnimator!!.start()
     }
 
     private fun stopAnimation() {
-        if (pulseAnimator == null || !pulseAnimator!!.isStarted) {
-            return
+        pulseAnimator.let {
+            if (it == null || !it.isStarted) {
+                return
+            }
+            it.end()
         }
-        pulseAnimator!!.end()
         pulseView.visibility = GONE
     }
 
@@ -122,7 +126,11 @@ internal class SequenceStepDot(context: Context, attrs: AttributeSet?, defStyleA
     }
 
     override fun onDetachedFromWindow() {
-        pulseAnimator?.cancel()
+        pulseAnimator?.apply {
+            removeAllListeners()
+            cancel()
+        }
+        pulseAnimator = null
         super.onDetachedFromWindow()
     }
 }
