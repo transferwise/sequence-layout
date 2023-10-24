@@ -36,11 +36,11 @@ import androidx.core.view.ViewCompat
  *
  * @see com.transferwise.sequencelayout.SequenceStep
  */
-public class SequenceLayout @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), SequenceStep.OnStepChangedListener {
+public class SequenceLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
+    FrameLayout(context, attrs, defStyleAttr), SequenceStep.OnStepChangedListener {
+
+    public constructor(context: Context) : this(context, null)
+    public constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     init {
         LayoutInflater.from(getContext()).inflate(R.layout.sequence_layout, this, true)
