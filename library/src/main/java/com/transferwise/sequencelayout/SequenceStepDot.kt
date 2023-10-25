@@ -15,11 +15,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 
-internal class SequenceStepDot(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-    FrameLayout(context, attrs, defStyleAttr) {
-
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+internal class SequenceStepDot @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var pulseAnimator: AnimatorSet? = null
 
