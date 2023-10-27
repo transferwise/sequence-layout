@@ -14,9 +14,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.transferwise.sequencelayout.sample'
 }
 
 dependencies {
     implementation(project(":library"))
-    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.appcompat:appcompat:1.6.0")
 }
